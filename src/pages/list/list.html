@@ -1,23 +1,49 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
+    <ion-navbar>
+        <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>List</ion-title>
-  </ion-navbar>
+        <ion-title>Mês</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-right>
-        {{item.note}}
-      </div>
-    </button>
-  </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                Chegada
+            </ion-col>
+            <ion-col>
+                Saída Almoço
+            </ion-col>
+            <ion-col>
+                Volta Almoço
+            </ion-col>
+            <ion-col>
+                Saída
+            </ion-col>
+            <ion-col>
+                Horas
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of horarios | async " ng>
+            <ion-col>
+                {{item.chegada | date: 'dd/MM/yyyy HH:mm'}}
+            </ion-col>
+            <ion-col>
+                {{item.saidaAlmoco | date: 'dd/MM/yyyy HH:mm'}}
+            </ion-col>
+            <ion-col>
+                {{item.voltaAlmoco | date: 'dd/MM/yyyy HH:mm'}}
+            </ion-col>
+            <ion-col>
+                {{item.saida | date: 'dd/MM/yyyy HH:mm'}}
+            </ion-col>
+            <ion-col>
+                {{calcularHoras(item) | number}}
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
 </ion-content>

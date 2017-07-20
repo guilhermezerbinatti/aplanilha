@@ -1,18 +1,26 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
+    <ion-navbar>
+        <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+        <ion-title>Home</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+    <h3>A Planilha</h3>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+    <ion-row>
+        <button [disabled]="ponto.chegada" (click)="marcarChegada()" ion-button full color="dark">Cheguei</button>
+    </ion-row>
+    <ion-row>
+        <button [disabled]="!ponto.chegada || ponto.saidaAlmoco" (click)="marcarSaindaAlmoco()" ion-button full color="danger">Saíndo Almoço</button>
+    </ion-row>
+    <ion-row>
+        <button [disabled]="!ponto.saidaAlmoco || ponto.voltaAlmoco" (click)="marcarVoltaAlmoco()" ion-button full color="default">Chegando Almoço</button>
+    </ion-row>
+    <ion-row>
+        <button [disabled]="!ponto.voltaAlmoco || ponto.saida" (click)="marcarSaida()" ion-button full color="secondary">Indo pra Casa</button>
+    </ion-row>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>

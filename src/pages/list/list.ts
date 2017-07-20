@@ -1,3 +1,4 @@
+import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -8,30 +9,26 @@ import { NavController, NavParams } from 'ionic-angular';
 export class ListPage {
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  horarios: FirebaseListObservable<any[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase) {
+    this.horarios = db.list("/horarios",{
+        query: {
+          orderByValue: true,
+          limitToLast: 30
+        }});
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
+  calcularHoras(item: any) {
+    var msecPerMinute = 1000 * 60;
+    var msecPerHour = msecPerMinute * 60;
+    
+    var interval = new Date(item.saidaAlmoco).getTime() - new Date(item.chegada).getTime();
+    interval += new Date(item.saida).getTime() - new Date(item.voltaAlmoco).getTime();
+    
+    var hours = Math.fround(interval / msecPerHour );
+    interval = interval - (hours * msecPerHour );
+    
+    return hours;
   }
 }
